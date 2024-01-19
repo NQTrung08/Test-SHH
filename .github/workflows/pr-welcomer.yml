@@ -11,11 +11,16 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const prAuthor = github.context.payload.pull_request.user.login;
-            const message = `Cảm ơn @${prAuthor} đã gửi Pull Request! Chúng tôi sẽ xem xét sớm nhất có thể.`;
-            github.issues.createComment({
-              issue_number: github.context.payload.pull_request.number,
-              owner: github.context.repo.owner,
-              repo: github.context.repo.repo,
-              body: message
-            })
+            const prPayload = github.context.payload;
+            if (prPayload && prPayload.pull_request) {
+              const prAuthor = prPayload.pull_request.user.login;
+              const message = `Cảm ơn @${prAuthor} đã gửi Pull Request! Chúng tôi sẽ xem xét sớm nhất có thể.`;
+              github.issues.createComment({
+                issue_number: prPayload.pull_request.number,
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                body: message
+              });
+            } else {
+              console.log('Không có thông tin pull request trong sự kiện.');
+            }
