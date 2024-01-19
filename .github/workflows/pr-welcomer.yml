@@ -1,0 +1,22 @@
+
+name: Pull Request Welcomer by TrunkNq
+on:
+  pull_request:
+    types: [opened]
+jobs:
+  welcome-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment PR
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prAuthor = context.payload.pull_request.user.login;
+            const message = `🎉 Cảm ơn @${prAuthor} đã gửi Pull Request! Chúng tôi sẽ xem xét sớm nhất có thể.`;
+            github.issues.createComment({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            })
