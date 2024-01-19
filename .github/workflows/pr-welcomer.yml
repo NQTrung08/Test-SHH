@@ -13,7 +13,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prAuthor = context.payload.pull_request.user.login;
-            const message = `🎉 Cảm ơn @${prAuthor} đã gửi Pull Request! Chúng tôi sẽ xem xét sớm nhất có thể.`;
+            const message = `Cảm ơn @${prAuthor} đã gửi Pull Request! Chúng tôi sẽ xem xét sớm nhất có thể.`;
             github.issues.createComment({
               issue_number: context.payload.pull_request.number,
               owner: context.repo.owner,
